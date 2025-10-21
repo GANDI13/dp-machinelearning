@@ -24,5 +24,7 @@ with st.expander('Data Visualization'):
 # Data preparations
 with st.sidebar:
   st.header('Input Features')
-
+  city = st.selectbox('city','Abuja', 'Enugu', 'Kano', 'Lagos', 'Port Harcourt'))
+  status = st.selectbox('status','ON', 'OFF'))
+  
                    
