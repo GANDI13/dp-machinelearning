@@ -40,7 +40,7 @@ data = {
 input_df = pd.DataFrame(data, index=[0])
 input_outage = pd.concat([input_df, X], axis=0)
 
-with st.expander('Input Feature')
+with st.expander('Input Feature'):
   st.write('**Input Outage**')
   input_df
   st.write('**Combine Input Data**')
