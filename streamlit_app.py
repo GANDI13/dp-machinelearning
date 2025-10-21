@@ -24,8 +24,7 @@ with st.expander('Data Visualization'):
 # Data preparations
 with st.sidebar:
   st.header('Input Features')
-  city = st.selectbox('city','Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
-  status = st.selectbox('status','ON', 'OFF'))
-  duration_minutes = st.slider('duration_minutes', 0.00, 179.00, 26.58)
+  city = st.selectbox('City',('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
+  status = st.selectbox('Status',('ON', 'OFF'))
+  duration_minutes = st.slider('Duration_Minutes (mm)', 0.00, 179.00, 26.58)
   
-                   
