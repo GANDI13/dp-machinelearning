@@ -11,7 +11,7 @@ with st.expander('Data'):
     st.write(df)
 
 # Separate X and y
-st.write('**X**')
+st.write('**X_Raw**')
 X_Raw = df.drop('home_id', axis=1)
 st.write(X_Raw)
 
@@ -40,7 +40,7 @@ data = {
 }
 
 input_df = pd.DataFrame(data)
-input_power_outage = pd.concat([input_df, X], axis=0)
+input_power_outage = pd.concat([input_df, X_Raw], axis=0)
 
 # Encode categorical variables. x
 encode = ['city', 'status']
