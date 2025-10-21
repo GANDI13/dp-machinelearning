@@ -34,12 +34,18 @@ data = {
     'city': [city],
     'duration_minutes': [duration_minutes],
     'time_since_last_outage': [time_since_last_outage],
-    'status': [status]}
+    'status': [status]
+}
 
-input_df = pd.DataFrame(data)
-input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
+nput_df = pd.DataFrame(data)
+
+# If your pipeline handles preprocessing, no need to merge with X
+input_synthetic_power_outage_data = input_df
 
 st.write("Input preview:")
 st.dataframe(input_df)
+
+# Make prediction
+prediction = model.predict(input_synthetic_power_outage_data)
+st.success(f"Predicted outage category: {prediction[0]}")
         
-  
