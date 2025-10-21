@@ -8,3 +8,11 @@ with st.expander('Data'):
   st.write('**Raw Data**')
   df = pd.read_csv('https://raw.githubusercontent.com/GANDI13/dp-machinelearning/refs/heads/master/synthetic_power_outage_data.csv')
   df
+
+st.write('**X**')
+x = df.drop('home_id', axis=1)
+x
+
+st.write('**y**')
+y = df.home_id
+y
