@@ -37,11 +37,13 @@ data = {
     'status': [status]
 }
 
-input_df = pd.DataFrame(data, index=[0])
-input_outage = pd.concat([input_df, X], axis=0)
+#input_df = pd.DataFrame(data, index=[0])
+#input_power_outage_data = pd.concat([input_df, X], axis=0)
+input_power_outage_data = input_df
+prediction = model.predict(input_power_outage_data)
 
 with st.expander('Input Feature'):
-  st.write('**Input Outage**')
+  st.write('**Input Power_Outage_Data**')
   input_df
   st.write('**Combine Input Data**')
   input_outage
