@@ -21,4 +21,8 @@ y
 with st.expander('Data Visualization'):
   st.scatter_chart(data=df, x='home_id', y='time_since_last_outage', color='city')
 
+# Data preparations
+with st.sidebars:
+  st.header('Input Features')
+
                    
