@@ -10,16 +10,16 @@ with st.expander('Data'):
   df
 
 st.write('**X**')
-x = df.drop('city', axis=1)
+x = df.drop('home_id', axis=1)
 x
 
 st.write('**y**')
-y = df.city
+y = df.home_id
 y
 
 # home_id,city,latitude,longitude,status,timestamp,duration_minutes,time_since_last_outage
 with st.expander('Data Visualization'):
-  st.scatter_chart(data=df, x='home_id', y='time_since_last_outage', color='city')
+  st.scatter_chart(data=df, x='time_since_last_outage', y='city', color='home_id')
 
 # Data preparations
 with st.sidebar:
