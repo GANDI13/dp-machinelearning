@@ -35,8 +35,8 @@ data = {'Abuja': Abuja,
         'time_since_last_outage': time_since_last_outage,
         'status': status}
 input_df = pd.DataFrame(data, index=[0])
-input_synthetic_power_outage_data.csv = pd.concat([input_df, x], axis=0)
+input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
 
-input_synthetic_power_outage-data.csv
+input_synthetic_power_outage-data
         
   
