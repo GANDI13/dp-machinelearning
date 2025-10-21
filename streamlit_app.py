@@ -39,18 +39,22 @@ data = {
 
 X = pd.read_csv('synthetic_power_outage_data.csv')
 input_df = pd.DataFrame(data, index=[0])
-input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
+input_power_outage = pd.concat([input_df, X], axis=0)
 #input_power_outage_data = input_df
 #prediction = model.predict(input_power_outage_data)
 
+# Encode 
+  encode = ['city', 'status']
+  df_power_outage = pd.get_dummies(input_synthetic_power_outage_data, prefix=encode)
+  input_row = df_power_outage[:1]
+
 with st.expander('Input Feature'):
-  st.write('**Input Power_Outage_Data**')
+  st.write('**Input Power_Outage**')
   input_df
   st.write('**Combine Input Data**')
-  input_outage
+  input_power_outage
+  st.write('Encoded Input Power_Outage')
+  input_row
 
-# Encode 
-encode = ['city', 'status']
-df_synthetic_power_outage_data = pd.get_dummies(input_synthetic_power_outage_data, prefix=encode)
-df_synthetic_power_outage_data
+
         
