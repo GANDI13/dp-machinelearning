@@ -24,7 +24,7 @@ with st.expander('Data Visualization'):
 # Data preparations
 with st.sidebar:
   st.header('Input Features')
-  city = st.selectbox('City',('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
+  city = st.selectbox('Select City',('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
   status = st.selectbox('Status',('ON', 'OFF'))
   duration_minutes = st.slider('Duration Minutes (mins)', 0.00, 179.00, 26.58)
   time_since_last_outage = st.slider('Time Since Last Outage (mins)', 0.00, 2026.0, 356.12)
@@ -34,8 +34,7 @@ data = {
     'city': [city],
     'duration_minutes': [duration_minutes],
     'time_since_last_outage': [time_since_last_outage],
-    'status': [status]
-}
+    'status': [status]}
 
 input_df = pd.DataFrame(data)
 input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
