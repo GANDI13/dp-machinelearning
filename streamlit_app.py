@@ -24,7 +24,7 @@ with st.expander('Data Visualization'):
 # Data preparations
 with st.sidebar:
   st.header('Input Features')
-  city = st.selectbox('city','Abuja', 'Enugu', 'Kano', 'Lagos', 'Port Harcourt'))
+  city = st.selectbox('city','Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
   status = st.selectbox('status','ON', 'OFF'))
   time_since_last_outage = st.slider('Time_Since_Last_Outage', 0.00, 2026.00, 356.12)
   
