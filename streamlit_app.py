@@ -49,4 +49,8 @@ with st.expander('Input Feature'):
   st.write('**Combine Input Data**')
   input_outage
 
+# Encode 
+encode = ['city', 'status']
+df_synthetic_power_outage_data = pd.get_dummies(input_synthetic_power_outage_data, prefix=encode)
+df_synthetic_power_outage_data
         
