@@ -12,12 +12,12 @@ with st.expander('Data'):
 
 # Separate X and y
 st.write('**X**')
-X = df.drop('home_id', axis=1)
-st.write(X)
+X_Raw = df.drop('home_id', axis=1)
+st.write(X_Raw)
 
-st.write('**y**')
-y = df['home_id']
-st.write(y)
+st.write('**Y_Raw**')
+Y_Raw = df['home_id']
+st.write(Y_Raw)
 
 # Visualization
 with st.expander('Data Visualization'):
@@ -56,8 +56,8 @@ target_mapper = {
 def target_encode(vl):
     return target_mapper[val]
 
-y = y_raw.apply(target_encode)
-y
+Y = Y_Raw.apply(target_encode)
+Y
     
 # Display results
 with st.expander('Input Feature Summary'):
