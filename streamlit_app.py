@@ -26,6 +26,6 @@ with st.sidebar:
   st.header('Input Features')
   city = st.selectbox('City',('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
   status = st.selectbox('Status',('ON', 'OFF'))
-  duration_minutes = st.slider('Duration Minutes (mm)', 0.00, 179.00, 26.58)
-  time_since_last_outage = st.slider('Time Since Last Outage (mm)', 0.00, 2026.0, 356.12)
+  duration_minutes = st.slider('Duration Minutes (mins)', 0.00, 179.00, 26.58)
+  time_since_last_outage = st.slider('Time Since Last Outage (mins)', 0.00, 2026.0, 356.12)
   
