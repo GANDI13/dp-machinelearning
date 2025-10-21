@@ -37,7 +37,13 @@ data = {
     'status': [status]
 }
 
-X = pd.read_csv("synthetic_power_outage.csv")  # path to your dataset
+input_df = pd.DataFrame(data, index=[0])
 input_power_outage_data = pd.concat([input_df, X], axis=0)
+
+with st.expander('Input Feature')
+  st.write('**Input Power_Outage_Data**')
+  input_df
+  st.write('**Combine Input Data**')
+  input_power_outage_data
 
         
