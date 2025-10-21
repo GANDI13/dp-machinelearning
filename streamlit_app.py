@@ -38,6 +38,6 @@ data = {
 }
 
 X = pd.read_csv("synthetic_power_outage.csv")  # path to your dataset
-input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
+input_power_outage_data = pd.concat([input_df, X], axis=0)
 
         
