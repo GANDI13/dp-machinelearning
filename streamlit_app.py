@@ -42,10 +42,17 @@ data = {
 input_df = pd.DataFrame(data)
 input_power_outage = pd.concat([input_df, X], axis=0)
 
-# Encode categorical variables
+# Encode categorical variables. x
 encode = ['city', 'status']
 df_power_outage = pd.get_dummies(input_power_outage, columns=encode)
 input_row = df_power_outage[:1]
+
+# Encode y
+target_mapper = {
+    0: 'No Outage',
+    1: 'Short Outage',
+    2: 'Long Outage'
+}
 
 # Display results
 with st.expander('Input Feature Summary'):
