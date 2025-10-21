@@ -37,10 +37,11 @@ data = {
     'status': [status]
 }
 
-#input_df = pd.DataFrame(data, index=[0])
-#input_power_outage_data = pd.concat([input_df, X], axis=0)
-input_power_outage_data = input_df
-prediction = model.predict(input_power_outage_data)
+X = pd.read_csv('synthetic_power_outage_data.csv')
+input_df = pd.DataFrame(data, index=[0])
+input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
+#input_power_outage_data = input_df
+#prediction = model.predict(input_power_outage_data)
 
 with st.expander('Input Feature'):
   st.write('**Input Power_Outage_Data**')
