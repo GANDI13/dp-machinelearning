@@ -46,7 +46,7 @@ input_df = pd.DataFrame(data)
 # Combine input with dataset for consistent encoding
 input_power_outage = pd.concat([input_df, X_Raw], axis=0)
 
-# One-hot encode categorical variables
+# Encode categorical variables
 encode = ['city', 'status']
 df_encoded = pd.get_dummies(input_power_outage, columns=encode)
 X_encoded = pd.get_dummies(X_Raw, columns=encode)
@@ -55,7 +55,7 @@ df_encoded = df_encoded.reindex(columns=X_encoded.columns, fill_value=0)
 # Select input row
 input_row = df_encoded[:1]
 
-# Ensure numeric-only data
+# Numeric-only data
 X_encoded = X_encoded.apply(pd.to_numeric, errors='coerce').fillna(0)
 input_row = input_row.apply(pd.to_numeric, errors='coerce').fillna(0)
 
@@ -71,6 +71,21 @@ clf.fit(X_encoded, Y_encoded)
 prediction = clf.predict(input_row)
 prediction_label = label_encoder.inverse_transform(prediction)
 prediction_proba = clf.predict_proba(input_row)
+
+df_prediction_proba = pd.DataFrame(prediction_proba)
+df_prediction_proba.colums = ['Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu']
+df_prediction_proba.rename(colums={0:'Abuja',
+                                   1:'Lagos', 
+                                   2:'Kano', 
+                                   3:'Port Harcourt',
+                                   4:'Enugu'})
+
+# df_prediction_proba
+
+# Display predicted city
+st.subheader('Predicted City')
+power_outage_city = np.array(['Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'])
+st.success(str(power_outage_city[prediction][0]))
 
 # Display results
 st.subheader('Prediction Results')
