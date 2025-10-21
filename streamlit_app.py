@@ -44,7 +44,9 @@ input_power_outage = pd.concat([input_df, X], axis=0)
 #prediction = model.predict(input_power_outage_data)
 
 # Encode 
-  encode = ['city', 'status']
+with st.expander('Input Features:'):
+    st.write(input_df)
+encode = ['city', 'status']
   df_power_outage = pd.get_dummies(input_synthetic_power_outage_data, prefix=encode)
   input_row = df_power_outage[:1]
 
