@@ -37,7 +37,7 @@ data = {
     'status': [status]
 }
 
-nput_df = pd.DataFrame(data)
+input_df = pd.DataFrame(data)
 
 # If your pipeline handles preprocessing, no need to merge with X
 input_synthetic_power_outage_data = input_df
