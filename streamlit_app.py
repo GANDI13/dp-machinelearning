@@ -11,13 +11,13 @@ with st.expander('Data'):
     st.write(df)
 
 # Separate X and y
-st.write('**X_Raw**')
+st.write('**X**')
 X = df.drop('home_id', axis=1)
-st.write(X_Raw)
+st.write(X)
 
-st.write('**Y_Raw**')
+st.write('**y**')
 y = df['home_id']
-st.write(Y_Raw)
+st.write(y)
 
 # Visualization
 with st.expander('Data Visualization'):
