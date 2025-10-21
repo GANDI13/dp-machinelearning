@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
 
 st.title('🤖 Machine Learning App')
 st.info('This app builds a machine learning model for synthetic_power_outage in Nigeria')
@@ -39,52 +40,45 @@ data = {
     'time_since_last_outage': [time_since_last_outage],
     'status': [status]
 }
+
 input_df = pd.DataFrame(data)
 
-# Combine input with full dataset for consistent encoding
+# Combine input with dataset for consistent encoding
 input_power_outage = pd.concat([input_df, X_Raw], axis=0)
 
-# Encode categorical variables
+# One-hot encode categorical variables
 encode = ['city', 'status']
 df_encoded = pd.get_dummies(input_power_outage, columns=encode)
-
-# Ensure same columns between train and input
 X_encoded = pd.get_dummies(X_Raw, columns=encode)
 df_encoded = df_encoded.reindex(columns=X_encoded.columns, fill_value=0)
 
-# Select only the first row (our input)
+# Select input row
 input_row = df_encoded[:1]
 
-# Encode Y (for demo — assumes numeric IDs map to 3 outage categories)
-target_mapper = {
-    0: 'No Outage',
-    1: 'Short Outage',
-    2: 'Long Outage'
-}
-def target_encode(vl):
-    return target_mapper.get(vl, 'Unknown')
+# Ensure numeric-only data
+X_encoded = X_encoded.apply(pd.to_numeric, errors='coerce').fillna(0)
+input_row = input_row.apply(pd.to_numeric, errors='coerce').fillna(0)
 
-# Try encoding the target if possible
-try:
-    Y = Y_Raw.apply(target_encode)
-except Exception:
-    Y = Y_Raw  # fallback
+# Encode target labels
+label_encoder = LabelEncoder()
+Y_encoded = label_encoder.fit_transform(Y_Raw.astype(str))
 
 # Train model
 clf = RandomForestClassifier()
-clf.fit(X_encoded, Y_Raw)  # use numeric Y_Raw for training
+clf.fit(X_encoded, Y_encoded)
 
-# Predict
+# Make prediction
 prediction = clf.predict(input_row)
+prediction_label = label_encoder.inverse_transform(prediction)
 prediction_proba = clf.predict_proba(input_row)
 
-# Display predictions
+# Display results
 st.subheader('Prediction Results')
-st.write(f'**Predicted Home ID / Outage Class:** {prediction[0]}')
+st.write(f'**Predicted Home ID / Outage Class:** {prediction_label[0]}')
 st.write('**Prediction Probability:**')
 st.write(prediction_proba)
 
-# Summary
+# Display summary
 with st.expander('Input Feature Summary'):
     st.write('**Input Data**')
     st.write(input_df)
