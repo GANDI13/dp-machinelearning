@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from sktlearn.ensemble inport RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 st.title('🤖 Machine Learning App')
 st.info('This app builds a machine learning model for synthetic_power_outage in Nigeria')
