@@ -16,3 +16,6 @@ x
 st.write('**y**')
 y = df.home_id
 y
+
+with st.expander('Data Visualization'):
+  st.scatter_chart(data=df,x  
