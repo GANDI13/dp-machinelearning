@@ -37,6 +37,7 @@ data = {'Abuja': Abuja,
 input_df = pd.DataFrame(data, index=[0])
 input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
 
-input_synthetic_power_outage-data
+input_df
+#input_synthetic_power_outage-data
         
   
