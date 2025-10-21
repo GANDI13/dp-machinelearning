@@ -30,10 +30,10 @@ with st.sidebar:
   time_since_last_outage = st.slider('Time Since Last Outage (mins)', 0.00, 2026.0, 356.12)
 
 # Create a DataFrame For Input Features
-data = {'Abuja', Abuja,
-        'duration_minutes', duration_minutes,
-        'time_since_last_outage', time_since_last_outage,
-        'status', status}
+data = {'Abuja': Abuja,
+        'duration_minutes': duration_minutes,
+        'time_since_last_outage': time_since_last_outage,
+        'status': status}
 input_df = pd.DataFrame(data, index=[0])
 input_synthetic_power_outage_data = pd.concat([input_df, x], axis=0)
 
