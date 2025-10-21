@@ -42,23 +42,30 @@ data = {
 input_df = pd.DataFrame(data)
 input_power_outage = pd.concat([input_df, X_Raw], axis=0)
 
-# Encode categorical variables. x
+# Encode categorical variables
 encode = ['city', 'status']
 df_power_outage = pd.get_dummies(input_power_outage, columns=encode)
 input_row = df_power_outage[:1]
 
-# Encode y
+# Target mapping example (optional if you have real outage category labels)
+# Since 'home_id' is not a true target label, this is just a placeholder for demo
 target_mapper = {
     0: 'No Outage',
     1: 'Short Outage',
     2: 'Long Outage'
 }
-def target_encode(vl):
-    return target_mapper[val]
 
-Y = Y_Raw.apply(target_encode)
-Y
-    
+def target_encode(vl):
+    return target_mapper.get(vl, 'Unknown')
+
+# Example use: if you had numeric labels (0,1,2) in Y_Raw
+try:
+    Y = Y_Raw.apply(target_encode)
+    st.write('**Encoded Target (Y)**')
+    st.write(Y)
+except Exception as e:
+    st.warning(f'Skipping target encoding: {e}')
+
 # Display results
 with st.expander('Input Feature Summary'):
     st.write('**Input Power Outage**')
@@ -67,6 +74,8 @@ with st.expander('Input Feature Summary'):
     st.write(input_power_outage)
     st.write('**Encoded Input Power Outage**')
     st.write(input_row)
+
+
 
 
         
