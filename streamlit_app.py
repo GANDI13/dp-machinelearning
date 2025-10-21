@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from sktlearn.ensemble inport RandomForestClassifier
 
 st.title('🤖 Machine Learning App')
 st.info('This app builds a machine learning model for synthetic_power_outage in Nigeria')
@@ -73,8 +74,16 @@ with st.expander('Input Feature Summary'):
     st.write(input_power_outage)
     st.write('**Encoded Input Power Outage**')
     st.write(input_row)
+    
+# Model training and Inference
+# Train ML Model
+clf = RandomForestClassifier() 
+clf.fit(X_Raw, Y)
 
+# Apply Model to make predictions
+prediction = clf.predict(input_row)
+prediction_proba = clf.predict_proba(input_row)
 
-
+prediction_proba
 
         
