@@ -53,7 +53,9 @@ target_mapper = {
     1: 'Short Outage',
     2: 'Long Outage'
 }
-
+def target_encode(vl):
+    return target_mapper[val]
+    
 # Display results
 with st.expander('Input Feature Summary'):
     st.write('**Input Power Outage**')
