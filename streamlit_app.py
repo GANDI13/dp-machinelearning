@@ -37,15 +37,7 @@ data = {
     'status': [status]
 }
 
-input_df = pd.DataFrame(data)
+X = pd.read_csv("synthetic_power_outage.csv")  # path to your dataset
+input_synthetic_power_outage_data = pd.concat([input_df, X], axis=0)
 
-# If your pipeline handles preprocessing, no need to merge with X
-input_synthetic_power_outage_data = input_df
-
-st.write("Input preview:")
-st.dataframe(input_df)
-
-# Make prediction
-prediction = model.predict(input_synthetic_power_outage_data)
-st.success(f"Predicted outage category: {prediction[0]}")
         
