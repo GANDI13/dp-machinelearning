@@ -17,5 +17,8 @@ st.write('**y**')
 y = df.home_id
 y
 
+# home_id,city,latitude,longitude,status,timestamp,duration_minutes,time_since_last_outage
 with st.expander('Data Visualization'):
-  st.scatter_chart(data=df,x  
+  st.scatter_chart(data=df, x='city', y='time_since_last_outage', color='home_id')
+
+                   
