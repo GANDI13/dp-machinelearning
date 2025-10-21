@@ -1,35 +1,37 @@
 import streamlit as st
 import pandas as pd
+
 st.title('🤖 Machine Learning App')
+st.info('This app builds a machine learning model for synthetic_power_outage in Nigeria')
 
-st.info('This app builds a machine learning model for synthetic_power_outage in Nigeria') 
-
+# Load data
 with st.expander('Data'):
-  st.write('**Raw Data**')
-  df = pd.read_csv('https://raw.githubusercontent.com/GANDI13/dp-machinelearning/refs/heads/master/synthetic_power_outage_data.csv')
-  df
+    st.write('**Raw Data**')
+    df = pd.read_csv('https://raw.githubusercontent.com/GANDI13/dp-machinelearning/refs/heads/master/synthetic_power_outage_data.csv')
+    st.write(df)
 
+# Separate X and y
 st.write('**X**')
-x = df.drop('home_id', axis=1)
-x
+X = df.drop('home_id', axis=1)
+st.write(X)
 
 st.write('**y**')
-y = df.home_id
-y
+y = df['home_id']
+st.write(y)
 
-# home_id,city,latitude,longitude,status,timestamp,duration_minutes,time_since_last_outage
+# Visualization
 with st.expander('Data Visualization'):
-  st.scatter_chart(data=df, x='city', y='time_since_last_outage', color='home_id')
+    st.scatter_chart(data=df, x='city', y='time_since_last_outage', color='home_id')
 
-# Data preparations
+# Sidebar input
 with st.sidebar:
-  st.header('Input Features')
-  city = st.selectbox('Select City',('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
-  status = st.selectbox('Status',('ON', 'OFF'))
-  duration_minutes = st.slider('Duration Minutes (mins)', 0.00, 179.00, 26.58)
-  time_since_last_outage = st.slider('Time Since Last Outage (hrs)', 0.00, 2026.0, 356.12)
+    st.header('Input Features')
+    city = st.selectbox('Select City', ('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
+    status = st.selectbox('Status', ('ON', 'OFF'))
+    duration_minutes = st.slider('Duration Minutes (mins)', 0.0, 179.0, 26.58)
+    time_since_last_outage = st.slider('Time Since Last Outage (hrs)', 0.0, 2026.0, 356.12)
 
-# Create a DataFrame for model input
+# Input DataFrame
 data = {
     'city': [city],
     'duration_minutes': [duration_minutes],
@@ -37,26 +39,22 @@ data = {
     'status': [status]
 }
 
-X = pd.read_csv('synthetic_power_outage_data.csv')
-input_df = pd.DataFrame(data, index=[0])
+input_df = pd.DataFrame(data)
 input_power_outage = pd.concat([input_df, X], axis=0)
-#input_power_outage_data = input_df
-#prediction = model.predict(input_power_outage_data)
 
-# Encode 
-with st.expander('Input Features:'):
-    st.write(input_df)
+# Encode categorical variables
 encode = ['city', 'status']
-  df_power_outage = pd.get_dummies(input_synthetic_power_outage_data, prefix=encode)
-  input_row = df_power_outage[:1]
+df_power_outage = pd.get_dummies(input_power_outage, columns=encode)
+input_row = df_power_outage[:1]
 
-with st.expander('Input Feature'):
-  st.write('**Input Power_Outage**')
-  input_df
-  st.write('**Combine Input Data**')
-  input_power_outage
-  st.write('Encoded Input Power_Outage')
-  input_row
+# Display results
+with st.expander('Input Feature Summary'):
+    st.write('**Input Power Outage**')
+    st.write(input_df)
+    st.write('**Combined Input Data**')
+    st.write(input_power_outage)
+    st.write('**Encoded Input Power Outage**')
+    st.write(input_row)
 
 
         
