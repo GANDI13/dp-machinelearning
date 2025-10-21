@@ -49,9 +49,23 @@ prediction = clf.predict(input_encoded)
 predicted_city = label_encoder.inverse_transform(prediction)[0]
 
 # Display results
-st.subheader('🏙️ Predicted City')
+st.subheader('Predicted City')
 st.success(f'The predicted city is: **{predicted_city}**')
 
+# Model reasoning (simple interpretive message)
+reason = ""
+if status == 'OFF' and duration_minutes > 100:
+    reason = "because power outages here tend to last longer when status is OFF for long durations."
+elif status == 'ON' and time_since_last_outage < 200:
+    reason = "because frequent restorations are common in this area."
+elif time_since_last_outage > 1000:
+    reason = "due to rare outage frequency and long stable periods."
+else:
+    reason = "based on the typical outage duration and recovery intervals."
+
+st.info(f"**Explanation:** The model predicted **{predicted_city}** {reason}")
+
+# Optional probability details
 with st.expander('Prediction Details'):
     prediction_proba = clf.predict_proba(input_encoded)
     df_prediction_proba = pd.DataFrame(prediction_proba, columns=label_encoder.classes_)
