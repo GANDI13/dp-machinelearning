@@ -51,8 +51,8 @@ input_row = df_power_outage[:1]
 # Since 'home_id' is not a true target label, this is just a placeholder for demo
 target_mapper = {
     0: 'No Outage',
-    1: 'Short Outage',
-    2: 'Long Outage'
+   1.0: 'Short Outage',
+   2026.0: 'Long Outage'
 }
 
 def target_encode(vl):
