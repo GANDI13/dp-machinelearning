@@ -55,7 +55,7 @@ prediction_label = label_encoder.inverse_transform(prediction)[0]
 prediction_proba = clf.predict_proba(input_encoded)[0]
 
 # --- Display prediction ---
-st.subheader('🔌 Predicted Power Status')
+st.subheader('Predicted Power Status')
 if prediction_label == 'ON':
     st.success(f"The predicted status is: **{prediction_label}**")
 else:
