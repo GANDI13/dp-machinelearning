@@ -13,56 +13,58 @@ with st.expander('Dataset Overview'):
     st.write('**Raw Data:**')
     st.dataframe(df)
 
-# Separate features and target
+# --- Prepare features and target ---
 X_Raw = df[['city', 'duration_minutes', 'time_since_last_outage']]
 Y_Raw = df['status']
 
-# Encode categorical variables
-X_encoded = pd.get_dummies(X_Raw, columns=['city'])
-label_encoder = LabelEncoder()
-Y_encoded = label_encoder.fit_transform(Y_Raw)
+# One-hot encode city column
+X_encoded = pd.get_dummies(X_Raw, columns=['city'], drop_first=False)
+X_encoded = X_encoded.apply(pd.to_numeric, errors='coerce')  # ensure numeric
+X_encoded = X_encoded.fillna(0)
 
-# Sidebar input
+# Encode target
+label_encoder = LabelEncoder()
+Y_encoded = label_encoder.fit_transform(Y_Raw.astype(str))
+
+# --- Sidebar user input ---
 with st.sidebar:
     st.header('Input Features')
     city = st.selectbox('Select City', ('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
     duration_minutes = st.slider('Duration Minutes (mins)', 0.0, 179.0, 26.58)
     time_since_last_outage = st.slider('Time Since Last Outage (hrs)', 0.0, 2026.0, 356.12)
 
-# Input DataFrame
+# Create input DataFrame
 input_df = pd.DataFrame({
     'city': [city],
     'duration_minutes': [duration_minutes],
     'time_since_last_outage': [time_since_last_outage]
 })
 
-# Combine and encode
-input_power_outage = pd.concat([input_df, X_Raw], axis=0)
-input_encoded = pd.get_dummies(input_power_outage, columns=['city'])
+# Match encoding format
+input_encoded = pd.get_dummies(input_df, columns=['city'], drop_first=False)
 input_encoded = input_encoded.reindex(columns=X_encoded.columns, fill_value=0)
-input_row = input_encoded[:1]
+input_encoded = input_encoded.apply(pd.to_numeric, errors='coerce')
 
-# Train model
+# --- Train model ---
 clf = RandomForestClassifier(random_state=42)
 clf.fit(X_encoded, Y_encoded)
 
-# Make prediction
-prediction = clf.predict(input_row)
+# --- Make prediction ---
+prediction = clf.predict(input_encoded)
 prediction_label = label_encoder.inverse_transform(prediction)[0]
-prediction_proba = clf.predict_proba(input_row)[0]
+prediction_proba = clf.predict_proba(input_encoded)[0]
 
-# Display predicted status
+# --- Display prediction ---
 st.subheader('🔌 Predicted Power Status')
 if prediction_label == 'ON':
-    st.success(f'The predicted status is: **{prediction_label}**')
+    st.success(f"The predicted status is: **{prediction_label}**")
 else:
-    st.error(f'The predicted status is: **{prediction_label}**')
+    st.error(f"The predicted status is: **{prediction_label}**")
 
-# Display model confidence
 confidence = np.max(prediction_proba) * 100
 st.metric(label="Model Confidence", value=f"{confidence:.2f}%")
 
-# Display probability table with progress columns
+# --- Show probabilities with progress columns ---
 with st.expander('Prediction Probabilities'):
     df_prediction_proba = pd.DataFrame([prediction_proba], columns=label_encoder.classes_)
     st.dataframe(
@@ -79,9 +81,9 @@ with st.expander('Prediction Probabilities'):
         use_container_width=True
     )
 
-# Show input summary
+# --- Show input summary ---
 with st.expander('Input Summary'):
     st.write('**User Input:**')
     st.write(input_df)
     st.write('**Encoded Model Input:**')
-    st.write(input_row)
+    st.write(input_encoded)
