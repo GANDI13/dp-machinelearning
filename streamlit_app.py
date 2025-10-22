@@ -5,61 +5,109 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 
 st.title('🤖 Machine Learning App')
-st.info('This app predicts the likely city based on power outage patterns in Nigeria.')
+st.info('This app predicts power outage trends across Nigerian cities using synthetic data.')
 
-# Load data
-with st.expander('Data'):
-    st.write('**Raw Data**')
+# Load dataset
+with st.expander('Dataset Overview'):
     df = pd.read_csv('https://raw.githubusercontent.com/GANDI13/dp-machinelearning/refs/heads/master/synthetic_power_outage_data.csv')
-    st.write(df)
+    st.write('**Raw Data**', df)
 
 # Separate features and target
-X_Raw = df[['duration_minutes', 'time_since_last_outage', 'status']]
-Y_Raw = df['city']
+X_Raw = df.drop('home_id', axis=1)
+Y_Raw = df['home_id']
 
-# Encode categorical variables
-X_encoded = pd.get_dummies(X_Raw, columns=['status'])
-label_encoder = LabelEncoder()
-Y_encoded = label_encoder.fit_transform(Y_Raw)
+# Quick Visualization
+with st.expander('Visualize Data'):
+    st.scatter_chart(data=df, x='city', y='time_since_last_outage', color='home_id')
 
-# Sidebar input
+# Sidebar user inputs
 with st.sidebar:
-    st.header('Input Features')
-    status = st.selectbox('Status', ('ON', 'OFF'))
-    duration_minutes = st.slider('Duration Minutes (mins)', 0.0, 179.0, 26.58)
+    st.header('Enter Input Features')
+    city = st.selectbox('Select City', ('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
+   # status = st.selectbox('Status', ('ON', 'OFF'))
+    duration_minutes = st.slider('Duration (mins)', 0.0, 179.0, 26.58)
     time_since_last_outage = st.slider('Time Since Last Outage (hrs)', 0.0, 2026.0, 356.12)
 
-# Input DataFrame
-input_df = pd.DataFrame({
+# Prepare input data
+input_data = {
+    'city': [city],
     'duration_minutes': [duration_minutes],
     'time_since_last_outage': [time_since_last_outage],
-    'status': [status]
-})
+    #'status': [status]
+}
+input_df = pd.DataFrame(input_data)
 
-# Match encoding format
-input_encoded = pd.get_dummies(input_df, columns=['status'])
-input_encoded = input_encoded.reindex(columns=X_encoded.columns, fill_value=0)
+# Combine input with full dataset for consistent encoding
+input_power_outage = pd.concat([input_df, X_Raw], axis=0)
 
-# Train model
-clf = RandomForestClassifier()
+# One-hot encode categorical features
+encode_cols = ['city', 'status']
+df_encoded = pd.get_dummies(input_power_outage, columns=encode_cols)
+X_encoded = pd.get_dummies(X_Raw, columns=encode_cols)
+
+# Align columns
+df_encoded = df_encoded.reindex(columns=X_encoded.columns, fill_value=0)
+input_row = df_encoded[:1]
+
+# Encode target variable
+label_encoder = LabelEncoder()
+Y_encoded = label_encoder.fit_transform(Y_Raw.astype(str))
+
+# Train the Random Forest model
+clf = RandomForestClassifier(random_state=42)
 clf.fit(X_encoded, Y_encoded)
 
-# Predict city
-prediction = clf.predict(input_encoded)
-predicted_city = label_encoder.inverse_transform(prediction)[0]
+# Predict
+prediction = clf.predict(input_row)
+prediction_label = label_encoder.inverse_transform(prediction)
+prediction_proba = clf.predict_proba(input_row)
 
-# Display results
-st.subheader('Predicted City')
-st.success(f'The predicted city is: **{predicted_city}**')
+# Display prediction results
+st.subheader(' Prediction Results')
+st.success(f"**Predicted status:** {status}")
+st.info(f"**Predicted Home ID / Outage Category:** {prediction_label[0]}")
+st.write('**Prediction Probabilities:**', prediction_proba)
+st.dataframe(df_prediction_proba,
+             column_config={
+                 'Abuja': st.column_config.ProgressColumn(
+                 Abuja,
+                 format='%f'
+                 width='medium',
+                 min_value=0,
+                 max_value=1
+                ),
+                'Lagos': st.column_config.ProgressColumn(
+                'Lagos',
+                 format='%f'
+                 width='medium',
+                 min_value=0,
+                 max_value=1
+                ),
+                'Kano': st.column_config.ProgressColumn(
+                'Kano',
+                 format='%f'
+                 width='medium',
+                 min_value=0,
+                 max_value=1
+                ),
+                'Port Harcourt': st.column_config.ProgressColumn(
+                'Port Harcourt',
+                 format='%f'
+                 width='medium',
+                 min_value=0,
+                 max_value=1
+                ),
+                'Enugu': st.column_config.ProgressColumn(
+                'Enugu',
+                 format='%f'
+                 width='medium',
+                 min_value=0,
+                 max_value=1
+                ),
 
-with st.expander('Prediction Details'):
-    prediction_proba = clf.predict_proba(input_encoded)
-    df_prediction_proba = pd.DataFrame(prediction_proba, columns=label_encoder.classes_)
-    st.write('**Prediction Probabilities:**')
-    st.write(df_prediction_proba)
-
+# Summary of input and encoding
 with st.expander('Input Summary'):
-    st.write(input_df)
-
+    st.write('**User Input Data**', input_df)
+    st.write('**Encoded Input (Model Input)**', input_row)
 
 
