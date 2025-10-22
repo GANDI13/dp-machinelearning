@@ -8,7 +8,7 @@ st.title('🤖 Machine Learning App')
 st.info('This app predicts the power outage status (ON/OFF) based on outage patterns in Nigerian cities.')
 
 # Load dataset
-with st.expander('📊 Dataset Overview'):
+with st.expander('Dataset Overview'):
     df = pd.read_csv('https://raw.githubusercontent.com/GANDI13/dp-machinelearning/refs/heads/master/synthetic_power_outage_data.csv')
     st.write('**Raw Data:**')
     st.dataframe(df)
@@ -24,7 +24,7 @@ Y_encoded = label_encoder.fit_transform(Y_Raw)
 
 # Sidebar input
 with st.sidebar:
-    st.header('🧩 Input Features')
+    st.header('Input Features')
     city = st.selectbox('Select City', ('Abuja', 'Lagos', 'Kano', 'Port Harcourt', 'Enugu'))
     duration_minutes = st.slider('Duration Minutes (mins)', 0.0, 179.0, 26.58)
     time_since_last_outage = st.slider('Time Since Last Outage (hrs)', 0.0, 2026.0, 356.12)
@@ -54,12 +54,12 @@ prediction_proba = clf.predict_proba(input_row)
 # Display predicted status
 st.subheader('🔌 Predicted Power Status')
 if prediction_label == 'ON':
-    st.success(f'The predicted status is: **{prediction_label}** ⚡')
+    st.success(f'The predicted status is: **{prediction_label}**')
 else:
-    st.error(f'The predicted status is: **{prediction_label}** 💡')
+    st.error(f'The predicted status is: **{prediction_label}**')
 
 # Display probability table with progress columns
-with st.expander('🔍 Prediction Probabilities'):
+with st.expander('Prediction Probabilities'):
     df_prediction_proba = pd.DataFrame(prediction_proba, columns=label_encoder.classes_)
     st.dataframe(
         df_prediction_proba,
@@ -76,7 +76,7 @@ with st.expander('🔍 Prediction Probabilities'):
     )
 
 # Show input summary
-with st.expander('🧾 Input Summary'):
+with st.expander('Input Summary'):
     st.write('**User Input:**')
     st.write(input_df)
     st.write('**Encoded Model Input:**')
