@@ -57,25 +57,40 @@ clf.fit(X_encoded, Y_encoded)
 
 # Predict
 prediction = clf.predict(input_row)
-prediction_label = label_encoder.inverse_transform(prediction)[0]
-prediction_proba = clf.predict_proba(input_row)[0]
+prediction_label = label_encoder.inverse_transform(prediction)
+prediction_proba = clf.predict_proba(input_row)
 
-# Display results
+# Convert probabilities to DataFrame
+df_prediction_proba = pd.DataFrame(prediction_proba, columns=label_encoder.classes_)
+
+# Display prediction results
 st.subheader('Prediction Results')
-st.success(f"**Predicted Status:** {prediction_label}")
+st.success(f"**Predicted Status:** {prediction_label[0]}")
+st.write('**Prediction Probabilities:**')
 
-# Probability display as bars
-st.markdown("### Prediction Probability")
-classes = label_encoder.classes_
-for i, cls in enumerate(classes):
-    prob_percent = prediction_proba[i] * 100
-    st.write(f"**{cls}: {prob_percent:.2f}%**")
-    st.progress(int(prob_percent))
+# Progress bars for each class probability
+st.dataframe(
+    df_prediction_proba,
+    column_config={
+        'OFF': st.column_config.ProgressColumn(
+            'OFF Probability',
+            format="%.2f",
+            width="medium",
+            min_value=0,
+            max_value=1
+        ),
+        'ON': st.column_config.ProgressColumn(
+            'ON Probability',
+            format="%.2f",
+            width="medium",
+            min_value=0,
+            max_value=1
+        ),
+    },
+    hide_index=True
+)
 
 # Summary of input
 with st.expander('Input Summary'):
     st.write('**User Input Data**', input_df)
     st.write('**Encoded Input (Model Input)**', input_row)
-
-
-
